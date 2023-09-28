@@ -22,8 +22,7 @@ namespace Exercises
          */
         public static string GetTheOnlyUpperCaseWord(IEnumerable<string> words)
         {
-            //TODO your code goes here
-            throw new NotImplementedException();
+            return words.SingleOrDefault(w => w.All(c => Char.IsUpper(c)));
         }
 
         /*
@@ -59,17 +58,41 @@ namespace Exercises
         public static IEnumerable<int> GetSingleElementCollection(
             IEnumerable<IEnumerable<int>> numberCollections)
         {
-            //TODO your code goes here
-            throw new NotImplementedException();
+            return numberCollections.Single(coll => coll.Count() == 1);
+
         }
 
         //Refactoring challenge
-        //TODO implement this method
         public static DateTime? GetSingleDay_Refactored(
             IEnumerable<DateTime> dates, DayOfWeek dayOfWeek)
         {
-            //TODO your code goes here
-            throw new NotImplementedException();
+
+            // I came up with this clunky solution partly because I had overlooked that
+            // the original method only returned a date if there was only one matching date;
+            // I was thinking we had to return the first match even if there were more.
+            // But I was also mistaken in how this works - in the case of an exception thrown,
+            // result does not get written to. Thus, the below does meet the spec
+            // but not by my design!
+
+            //DateTime? result = null;
+
+            //try{ 
+            //    result = dates.SingleOrDefault(d => d.DayOfWeek == dayOfWeek); 
+            //}
+            //catch (Exception ex)
+            //{
+            //    // Ignore exception on additional match
+            //}
+
+            //return result == DateTime.MinValue ? null : result;
+
+            // This solution is much better! First we get the count of matching days.
+            // It should be noted though that SingleOrDefault would also work here,
+            //  as we're not going to get an exception from it for additional days
+            return dates.Count(d => d.DayOfWeek == dayOfWeek) == 1 ?
+                dates.Single(d => d.DayOfWeek == dayOfWeek) :
+                (DateTime?)null;
+
         }
 
         //do not modify this method
