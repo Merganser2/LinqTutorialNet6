@@ -19,8 +19,15 @@ namespace Exercises
          */
         public static int? LengthOfTheShortestWord(IEnumerable<string> words)
         {
-            //TODO your code goes here
-            throw new NotImplementedException();
+            //if (words?.Count() == 0) return null;
+
+            //return words.Min(w => w.Length);
+
+            // or...
+            if (words == null) return null; // I added this
+
+            return words.Any() ? words.Min(w => w.Length) : null;
+
         }
 
         //Coding Exercise 2
@@ -38,17 +45,14 @@ namespace Exercises
          */
         public static int CountOfLargestNumbers(IEnumerable<int> numbers)
         {
-            //TODO your code goes here
-            throw new NotImplementedException();
+            return numbers.Count(num => num == numbers.Max());
         }
 
         //Refactoring challenge
-        //TODO implement this method
         public static int CountOfDogsOfTheOwnerWithMostDogs_Refactored(
             IEnumerable<Person> owners)
         {
-            //TODO your code goes here
-            throw new NotImplementedException();
+            return owners.Max(owner => owner.Pets.Count(pet => pet.PetType == PetType.Dog));
         }
 
         //do not modify this method
@@ -84,6 +88,18 @@ namespace Exercises
                 Id = id;
                 Name = name;
                 Pets = pets;
+            }
+        }
+
+        public class Pet_ : Pet, IComparable<Pet>
+        {
+            public Pet_(int id, string name, PetType petType, float weight) : base(id, name, petType, weight)
+            {
+            }
+
+            public int CompareTo(Pet other)
+            {
+                return PetType.CompareTo(other.PetType); // Choose a class property with which to compare
             }
         }
 
